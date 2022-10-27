@@ -3,6 +3,7 @@ import LoginReg from "./components/pages/auth/LoginReg";
 import Contact from "./components/pages/Contact";
 import Home from "./components/pages/Home";
 import Layout from "./components/pages/Layout";
+import UploadProduct from "./components/UploadProduct";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
           <Route index element={<Home/>} />
           <Route path="contact" element={<Contact/>} />
           <Route path="login" element={<LoginReg/>}/>
+          <Route path="upload-product" element={<UploadProduct/>} />
         </Route>
       </Routes>
     </BrowserRouter>

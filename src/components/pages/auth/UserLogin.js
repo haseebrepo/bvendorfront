@@ -25,13 +25,54 @@ const UserLogin = () => {
         // (actualData.email && actualData.password) ? console.log('all fields available') : console.log('all fields are rquired')
         if (actualData.email && actualData.password){
             console.log('all fields available')
-            document.getElementById('login-form').reset()
-            setError({
-                status:true,
-                type: 'success',
-                msg: 'Logged In Successfully'
-            })
-            navigate('/')
+            // document.getElementById('login-form').reset()
+            const UserLoginRequest = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: actualData.email, password: actualData.password })
+            };
+            fetch('http://localhost:8000/login/', UserLoginRequest)
+                .then(async response => {
+                    const isJson = response.headers.get('content-type')?.includes('application/json');
+                    const data = isJson && await response.json();
+                    
+                    // check for error response
+                    if (!response.ok) {
+                        // get error message from body or default to response status
+                        const error = (data && data.message) || response.status;
+                        setError({
+                            status:true,
+                            type: 'error',
+                            msg: JSON.stringify(error)
+                        })
+                        return Promise.reject(error);
+                        
+                    }
+                    console.log('here is the response data: ')
+                    console.log(data)
+                    localStorage.setItem('bvendor_user', JSON.stringify(data.data));
+                    setError({
+                        status:true,
+                        type: 'success',
+                        msg: 'Logged In Successfully'
+                    })
+                    navigate('/')
+                })
+                .catch(error => {
+                    this.setState({ errorMessage: error.toString() });
+                    console.error('There was an error!', error);
+                    setError({
+                        status:true,
+                        type: 'error',
+                        msg: JSON.stringify(error)
+                    })
+                });
+            // setError({
+            //     status:true,
+            //     type: 'success',
+            //     msg: 'Logged In Successfully'
+            // })
+            
         }
         else{
             console.log('all fields are rquired')

@@ -21,13 +21,12 @@ const Registration = () => {
             password: data.get('password'),
             confirm_password: data.get('password_confirmation'),
             store_name: data.get('store_name'),
-            name: data.get('name')
-
+            full_name: data.get('name')
         }
         console.log(actualData)
 
         // (actualData.email && actualData.password) ? console.log('all fields available') : console.log('all fields are rquired')
-        if (actualData.email && actualData.password && actualData.confirm_password && actualData.store_name && actualData.name){
+        if (actualData.email && actualData.password && actualData.confirm_password && actualData.store_name && actualData.full_name){
             console.log('all fields available')
             
             if (actualData.password !== actualData.confirm_password){
@@ -39,13 +38,55 @@ const Registration = () => {
                 })
             }
             else{
-                document.getElementById('registration-form').reset()
-                setError({
-                    status:true,
-                    type: 'success',
-                    msg: 'Registered Successfully'
-                })
-                navigate('/')
+                // document.getElementById('registration-form').reset()
+                const UserLoginRequest = {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(actualData)
+                };
+                fetch('http://localhost:8000/register/', UserLoginRequest)
+                    .then(async response => {
+                        const isJson = response.headers.get('content-type')?.includes('application/json');
+                        const data = isJson && await response.json();
+                        
+                        // check for error response
+                        if (!response.ok) {
+                            // get error message from body or default to response status
+                            const error = (data && data.message) || response.status;
+                            setError({
+                                status:true,
+                                type: 'error',
+                                // msg: JSON.stringify(error)
+                                msg: data.message
+                            })
+                            return Promise.reject(error);
+                            
+                        }
+                        console.log('here is the response data: ')
+                        console.log(data)
+                        // localStorage.setItem('bvendor_user', JSON.stringify(data.data));
+                        setError({
+                            status:true,
+                            type: 'success',
+                            msg: data.message
+                        })
+                        // navigate('/')
+                    })
+                    .catch(error => {
+                        this.setState({ errorMessage: error.toString() });
+                        console.error('There was an error!', error);
+                        setError({
+                            status:true,
+                            type: 'error',
+                            msg: JSON.stringify(error)
+                        })
+                    });
+                // setError({
+                //     status:true,
+                //     type: 'success',
+                //     msg: 'Registered Successfully'
+                // })
+                // navigate('/')
             }
             
             

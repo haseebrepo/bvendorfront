@@ -1,8 +1,17 @@
 import React from 'react'
 import { Box, AppBar, Toolbar, Typography, Button} from "@mui/material/";
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
+  const userData = localStorage.getItem('bvendor_user')? JSON.parse(localStorage.getItem('bvendor_user')) : null
+  const navigate = useNavigate()
+  const handleLogout = (e) => {
+    console.log('here is the event:- ')
+    console.log(e)
+    localStorage.removeItem('bvendor_user')
+    // navigate('/')
+    window.open('http://localhost:3000', '_self')
+  }
   return (
     
     <>
@@ -22,11 +31,30 @@ const Navbar = () => {
           <Button component={NavLink} to='/contact' 
           style={({isActive})=>{return {backgroundColor: isActive ?'':'' }}} 
           sx={{color:'white', textTransform:'none'}}>Contact</Button>
+
+
+          {userData?
+            <Button component={NavLink} to='/upload-product' 
+            style={({isActive})=>{return {backgroundColor: isActive ?'':'' }}} 
+            sx={{color:'white', textTransform:'none'}}>Upload Product</Button>: null
+            
+          }
           
-          <Button component={NavLink} to='/login'
-          style={(isActive)=>{return {backgroundColor: isActive? '':''}}}
-          sx={{color:'white', textTransfrom:'none'}}
-          >Login/Register</Button>
+          {
+            userData?
+            <Button component={NavLink} to='/'
+            style={(isActive)=>{return {backgroundColor: isActive? '':''}}}
+            sx={{color:'white', textTransfrom:'none'}}
+            onClick={handleLogout}
+            >Logout</Button>
+            :
+            <Button component={NavLink} to='/login'
+            style={(isActive)=>{return {backgroundColor: isActive? '':''}}}
+            sx={{color:'white', textTransfrom:'none'}}
+            >Login/Register</Button>
+          }
+
+          
 
         </Toolbar>
       </AppBar>
