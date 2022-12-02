@@ -89,7 +89,7 @@ else{
     
     responseData.data.data.map((item,index)=>(
       <Col >
-      <Product  index={index} title={item.title} quantity={item.quantity} price={item.price} image_url={item.image_url} id={item.id} description={item.description}/>
+      <Product  index={index} title={item.title} quantity={item.quantity} price={item.price} image_url={item.image_url} id={item.id} description={item.description} video_url={item.video_url}/>
       </Col>
     ))
     // <Product />

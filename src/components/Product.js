@@ -10,7 +10,7 @@ import image from './bike.jpg'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const Product = ({index, title, quantity, price, image_url, id, description}) => {
+const Product = ({index, title, quantity, price, image_url, id, description, video_url}) => {
 
 
   const navigate = useNavigate();
@@ -28,6 +28,14 @@ const Product = ({index, title, quantity, price, image_url, id, description}) =>
       msg = 'Delete successful'
       window.location.href = `http://localhost:3000`
     });
+  }
+
+  const handleClickVideo = (e, param) =>{
+    // e.preventDefault()
+    console.log('clicked', param)
+    console.log('here is the url: ', `http://localhost:8000${video_url}`)
+    window.location.href = `http://localhost:8000${video_url}`
+
   }
 
   
@@ -52,6 +60,15 @@ const Product = ({index, title, quantity, price, image_url, id, description}) =>
                     sx={{mt:3, mb:2, px:5, backgroundColor:'#2E3B55'}}
                     type='submit'>
                     Delete Product
+                </Button>
+                <br />
+                <Button
+                className='prod-del-button'
+                onClick={event => handleClickVideo(event, id)}
+                    variant='contained'
+                    sx={{mt:3, mb:2, px:5, backgroundColor:'#2E3B55'}}
+                    type='submit'>
+                    Product   Video
                 </Button>
             </div>
           

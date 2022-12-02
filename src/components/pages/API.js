@@ -14,7 +14,8 @@ const apiSettings = {
         form_data.append("title", data.title);
         form_data.append("description", data.description);
         form_data.append("quantity",data.quantity);
-        form_data.append("price",data.price)
+        form_data.append("price",data.price);
+        form_data.append("video_url", data.video_url, data.video_url.name);
     
     const myNewModel = await axios
             .post(`http://localhost:8000/product/`, form_data, {

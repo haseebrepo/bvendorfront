@@ -14,6 +14,7 @@ const UploadProduct = () => {
         title: "",
         description: "",
         image_url: "",
+        video_url: "",
         price: 0,
         quantity: 0
     });
@@ -21,6 +22,7 @@ const UploadProduct = () => {
         title: "",
         description: "",
         image_url: "",
+        video_url:"",
         price: 0,
         quantity: 0
     });
@@ -35,6 +37,12 @@ const UploadProduct = () => {
     const handleImageChange = (e) => {
         let newData = { ...data };
         newData["image_url"] = e.target.files[0];
+        setData(newData);
+    };
+
+    const handleVideoChange = (e) => {
+        let newData = { ...data };
+        newData["video_url"] = e.target.files[0];
         setData(newData);
     };
 
@@ -126,7 +134,7 @@ const UploadProduct = () => {
 
             <Row>
                 <Form.Group controlId="formFile" className="mb-3">
-                    <Form.Label>My Image</Form.Label>
+                    <Form.Label>Product Image</Form.Label>
                     <Form.Control
                         type="file"
                         name="image_url"
@@ -142,6 +150,26 @@ const UploadProduct = () => {
                     )}
                 </Form.Group>
             </Row>
+
+            <Row>
+                <Form.Group controlId="formFile" className="mb-3">
+                    <Form.Label>Product Video</Form.Label>
+                    <Form.Control
+                        type="file"
+                        name="video_url"
+                        accept="video/mp4,video/mkv,video/WEBM, video/"
+                        onChange={(e) => {
+                            handleVideoChange(e);
+                        }}
+                    />
+                    {errors.image_url && (
+                        <Form.Text className="alert-danger" tooltip>
+                            {errors.image_url}
+                        </Form.Text>
+                    )}
+                </Form.Group>
+            </Row>
+
             <Form.Group className="mb-3" controlId="descriptionInput">
                 <Form.Label>Description</Form.Label>
                 <Form.Control
